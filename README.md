@@ -17,19 +17,22 @@
 
 1.先建立数据库，用项目中的sql文件`rental_car.sql`直接导入数据库中
 
-![1670922028902](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\1670922028902.png)
+![image](https://user-images.githubusercontent.com/65472477/207279787-34605e42-98b5-47a0-9715-982d63821fde.png)
 
 2.用IDEA打开项目，添加tomcat，修改url
 
-![1670922301469](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\1670922301469.png)
+![image](https://user-images.githubusercontent.com/65472477/207279870-bdf847dd-1f44-47dc-b369-12bd6d613cc2.png)
 
-![1670922329699](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\1670922329699.png)
 
-![1670922340114](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\1670922340114.png)
+![image](https://user-images.githubusercontent.com/65472477/207279912-a0b70ed5-97fd-4a95-8f5c-3e6e881433e6.png)
+
+
+![image](https://user-images.githubusercontent.com/65472477/207279956-50f6881f-5511-44ab-bd90-ed266b1316cc.png)
+
 
 3.查看数据库连接，`src/applicationContext.xml`
 
-![1670922458458](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\1670922458458.png)
+![image](https://user-images.githubusercontent.com/65472477/207279992-cfe818ba-bab0-4003-b296-34b91b52551d.png)
 
 4.用vscode打开 `vue-admin-template`文件夹，这个模板有文档，可自行查阅，打开终端输入如下命令
 
@@ -41,7 +44,7 @@ npm i //安装需要的包
 
 idea中点击
 
-![1670923349207](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\1670923349207.png)
+![image](https://user-images.githubusercontent.com/65472477/207280042-64bfe2c1-3a61-43cc-81d1-c119e8d19e4d.png)
 
 vscode在终端内输入
 
@@ -51,6 +54,6 @@ npm run dev
 
 运行成功后输入账号admin密码123456进入
 
-![1670923484752](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\1670923484752.png)
+![image](https://user-images.githubusercontent.com/65472477/207280092-afe2d8e4-d6d1-4cc1-bd40-11b825777397.png)
 
 其他账号密码均为6个0
