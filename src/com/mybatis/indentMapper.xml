@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.IndentDao">
+    <select id="getIndentAll" resultType="com.entity.Indent">
+        select * from indent
+    </select>
+
+    <select id="getByOrderId" parameterType="String" resultType="com.entity.Indent">
+        select * from indent where order_id=#{id}
+    </select>
+
+    <select id="getIndentUser" resultType="com.entity.Indent" parameterType="String">
+        select * from indent where identity=#{identity}
+    </select>
+
+    <insert id="add" parameterType="com.entity.Indent" >
+        insert into indent
+        values (#{order_id},#{number},#{identity},#{price},#{status},#{start_time},#{end_time},#{time})
+    </insert>
+
+    <update id="update" parameterType="com.entity.Indent">
+        update indent
+        <set>
+            <if test="number != null and number != ''">
+                number = #{number},
+            </if>
+            <if test="identity != null and identity != ''">
+                identity = #{identity},
+            </if>
+            <if test="price != null and price != ''">
+                price = #{price},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="start_time != null">
+                start_time = #{start_time},
+            </if>
+            <if test="end_time != null">
+                end_time = #{end_time},
+            </if>
+            <if test="time != null">
+                time = #{time}
+            </if>
+        </set>
+        where order_id = #{order_id}
+    </update>
+
+    <delete id="delete" parameterType="String" >
+        delete from indent where order_id=#{id}
+    </delete>
+
+    <delete id="delIds" parameterType="List">
+        delete from indent where order_id in
+        <foreach collection="list" item="ids" open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <select id="searchIndent" parameterType="Map" resultType="com.entity.Indent">
+        select * from indent
+        <where>
+            <if test="type == 'order_id'">
+                order_id like concat('%', #{searchText}, '%')
+            </if>
+            <if test="type == 'number'">
+                number like concat('%', #{searchText}, '%')
+            </if>
+            <if test="type == 'identity'">
+                identity like concat('%', #{searchText}, '%')
+            </if>
+            <if test="timevalue != null and timevalue != ''">
+                and start_time like concat('%', #{timevalue}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>

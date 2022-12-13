@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.CheckDao">
+
+    <resultMap id="indentAndCheck" type="com.entity.Check">
+        <id property="check_id" column="check_id" />
+        <result property="order_id" column="order_id" />
+        <result property="time" column="time" />
+        <result property="description" column="description" />
+        <result property="pay" column="pay" />
+        
+        <association property="indent" javaType="com.entity.Indent">
+            <result property="number" column="number" />
+            <result property="identity" column="identity" />
+            <result property="status" column="status" />
+        </association>
+    </resultMap>
+
+    <select id="getCheckAll" resultMap="indentAndCheck">
+        select checks.*,indent.number,indent.identity,indent.status  from checks, indent where checks.order_id = indent.order_id
+--         select *  from checks, indent where checks.order_id = indent.order_id and indent.status = 2
+    </select>
+
+    <select id="getCheckByOrderId" resultType="com.entity.Check" parameterType="String">
+        select * from checks where order_id = #{id}
+    </select>
+
+    <insert id="add" parameterType="com.entity.Check">
+        insert into checks
+        values(#{check_id},#{order_id},#{time},#{description},#{pay})
+    </insert>
+
+    <delete id="delete" parameterType="String">
+        delete from checks where check_id = #{id}
+    </delete>
+
+    <delete id="delIds" parameterType="List">
+        delete from checks where check_id in
+        <foreach collection="list" item="ids" open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <update id="update" parameterType="com.entity.Check">
+        update checks set description=#{description},pay=#{pay} where check_id=#{check_id}
+    </update>
+
+    <select id="searchCheck" parameterType="Map" resultMap="indentAndCheck">
+        select checks.* from checks, indent where checks.order_id = indent.order_id and indent.status=3
+            <if test="type == 'check_id'">
+                and check_id like concat('%', #{searchText}, '%')
+            </if>
+            <if test="type == 'order_id'">
+                and checks.order_id like concat('%', #{searchText}, '%')
+            </if>
+    </select>
+</mapper>

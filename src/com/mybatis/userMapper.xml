@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.UserDao">
+
+<!--    登录-->
+    <select id="loginCheck" resultType="com.entity.User" parameterType="com.entity.User">
+        select id,username,password,identity,role,token from user where username = #{username} and password = #{password}
+    </select>
+
+    <select id="getUserKey" resultType="com.entity.User" parameterType="com.entity.User">
+        select username,phone from user where username = #{username} or phone = #{phone}
+    </select>
+
+    <insert id="addUser" parameterType="com.entity.User">
+        insert into user(username,password,phone,role) values (#{username},#{password},#{phone},#{role})
+    </insert>
+
+    <select id="getByUsername" parameterType="String" resultType="com.entity.User">
+        select * from user where username = #{username}
+    </select>
+
+    <update id="updateToken" parameterType="com.entity.User">
+        update user set token = #{token} where id = #{id}
+    </update>
+
+
+<!--    客户信息-->
+    <select id="getCustomerInfo" resultType="com.entity.User">
+        select id,name,phone,identity,sex from user where role = 2
+    </select>
+
+    <select id="searchCustomer" parameterType="Map" resultType="com.entity.User">
+        select * from user where role = 2
+        <if test="type == 'name'">
+            and name like concat('%', #{searchText}, '%')
+        </if>
+        <if test="type == 'phone'">
+            and phone like concat('%', #{searchText}, '%')
+        </if>
+        <if test="type == 'identity'">
+            and identity like concat('%', #{searchText}, '%')
+        </if>
+    </select>
+
+    <select id="getCustomerByIdentity" parameterType="String" resultType="com.entity.User">
+        select id,username,name,phone,sex,identity from user where identity = #{identity}
+    </select>
+
+    <select id="getCustomerById" parameterType="int" resultType="com.entity.User">
+        select id,username,name,phone,sex,identity from user where id = #{id}
+    </select>
+
+    <insert id="addCustomer" parameterType="com.entity.User">
+        insert into user(username,password,name,phone,identity,sex,role) values(#{username},#{password},#{name},#{phone},#{identity},#{sex},#{role})
+    </insert>
+
+    <update id="updateCustomer" parameterType="com.entity.User" >
+        update user
+        <set>
+            <if test="name != null and name != ''">
+                name=#{name},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone=#{phone},
+            </if>
+            <if test="identity != null and identity != ''">
+                identity=#{identity},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex=#{sex}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+<!--    账号管理-->
+    <select id="getAllList" resultType="com.entity.User">
+        select * from user
+    </select>
+
+    <insert id="add" parameterType="com.entity.User">
+        insert into user(username,password,name,phone,identity,role) values (#{username},#{password},#{name},#{phone},#{identity},#{role})
+    </insert>
+
+    <delete id="delById" parameterType="int">
+        delete from user where id = #{id}
+    </delete>
+
+    <delete id="delIds" parameterType="List">
+        delete from user where id in
+        <foreach collection="list" item="ids" open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <update id="update" parameterType="com.entity.User" >
+        update user
+        <set>
+            <if test="username != null and username != ''">
+                username=#{username},
+            </if>
+            <if test="password != null and password != ''">
+                password=#{password},
+            </if>
+            <if test="name != null and name != ''">
+                name=#{name},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone=#{phone},
+            </if>
+            <if test="identity != null and identity != ''">
+                identity=#{identity},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex=#{sex},
+            </if>
+            <if test="role != null and role != ''">
+                role=#{role}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="resetPwd" parameterType="map">
+        update user set password=#{password} where id=#{id}
+    </update>
+
+    <select id="search" parameterType="Map" resultType="com.entity.User">
+        select * from user
+        <where>
+            <if test="type == 'name'">
+                name like concat('%', #{searchText}, '%')
+            </if>
+            <if test="type == 'phone'">
+                phone like concat('%', #{searchText}, '%')
+            </if>
+            <if test="type == 'username'">
+                username like concat('%', #{searchText}, '%')
+            </if>
+        </where>
+    </select>
+
+<!--    个人信息-->
+    <update id="updatePersonInfo" parameterType="com.entity.User">
+        update user
+        <set>
+            <if test="name != null and name != ''">
+                name=#{name},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone=#{phone},
+            </if>
+            <if test="identity != null and identity != ''">
+                identity=#{identity},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex=#{sex},
+            </if>
+            <if test="icon != null">
+                icon=#{icon}
+            </if>
+        </set>
+        where username = #{username}
+    </update>
+
+    <update id="updatePersonPwd" parameterType="Map">
+        update user set password=#{new} where username=#{username}
+    </update>
+</mapper>

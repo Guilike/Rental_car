@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.CarDao">
+    <select id="getCarAll" resultType="com.entity.Car">
+        select * from car
+    </select>
+
+    <select id="getCarByNum" parameterType="String" resultType="com.entity.Car">
+        select * from car where number=#{number}
+    </select>
+
+    <select id="getCarLike" parameterType="Map" resultType="com.entity.Car">
+        select * from car
+        <where>
+            <if test="searchText != null and searchText != ''">
+                number like concat('%',#{searchText},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="add" parameterType="com.entity.Car" >
+        insert into car(number,type,brand,version,color,in_price,out_price,address,description,status,image)
+        values (#{number},#{type},#{brand},#{version},#{color},#{in_price},#{out_price},#{address},#{description},#{status},#{image})
+    </insert>
+
+    <update id="update" parameterType="com.entity.Car">
+        update car
+        <set>
+            <if test="number != null and number != ''">
+                number = #{number},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+            <if test="brand != null and brand != ''">
+                brand = #{brand},
+            </if>
+            <if test="version != null and version != ''">
+                version = #{version},
+            </if>
+            <if test="color != null and color != ''">
+                color = #{color},
+            </if>
+            <if test="in_price != null and in_price != ''">
+                in_price = #{in_price},
+            </if>
+            <if test="out_price != null and out_price != ''">
+                out_price = #{out_price},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="image != null and image != ''">
+                image = #{image}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int" >
+        delete from car where id=#{id}
+    </delete>
+
+    <delete id="delIds" parameterType="List">
+        delete from car where id in
+        <foreach collection="list" item="ids" open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <select id="getCarType" resultType="com.entity.Car">
+        select distinct type from car
+    </select>
+    <select id="getCarBrand" resultType="com.entity.Car">
+        select distinct brand from car
+    </select>
+    <select id="getCarColor" resultType="com.entity.Car">
+        select distinct color from car
+    </select>
+    <select id="getCarAddress" resultType="com.entity.Car">
+        select distinct address from car where status = 1
+    </select>
+
+    <select id="getCarByAddress" resultType="com.entity.Car" parameterType="Map">
+        select * from car
+            <where>
+                <if test="address != null and address != ''">
+                    address=#{address}
+                </if>
+            </where>
+
+    </select>
+
+    <select id="getCarOut" resultType="com.entity.Car">
+        select * from car where status = 1
+    </select>
+</mapper>
